@@ -3,7 +3,7 @@ import os
 import random
 import sys
 
-# parent directory to front of module search path
+# prepend parent directory to module search path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import sudoku
 
