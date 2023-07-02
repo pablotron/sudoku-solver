@@ -1,5 +1,6 @@
 import json
 import os
+import random
 import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import sudoku
@@ -16,12 +17,11 @@ def test_invalid_grid():
 
   # run tests
   for test in tests:
-    got_err = False
     try:
       sudoku._check_grid(test['grid'])
+      assert False, 'never reached'
     except sudoku.InvalidGrid:
-      got_err = True
-    assert got_err
+      assert True, 'got expected exception'
 
 def test_invalid_cell():
   """test sudoku.InvalidCell()"""
@@ -59,12 +59,11 @@ def test_invalid_cell():
 
   # run tests
   for test in tests:
-    got_err = False
     try:
       sudoku._check_grid(test['grid'])
+      assert False, 'never reached'
     except sudoku.InvalidCell:
-      got_err = True
-    assert got_err
+      assert True, 'got expected exception'
 
 def test_grid_to_string():
   """test sudoku.grid_to_string()"""
@@ -143,6 +142,41 @@ def test_pair_to_string():
   for test in tests:
     got = sudoku.pair_to_string(test['grid'], sudoku.solve(test['grid']))
     assert got == test['exp']
+
+def test_string_to_grid():
+  """test sudoku.string_to_grid()"""
+
+  # build 10 random grids
+  rand_grids = [[random.randint(0, 9) for i in range(81)] for j in range(10)]
+
+  pass_tests = [{
+    'val': '012345678' * 9, # input string
+    'exp': list(range(9)) * 9 # expected value
+  }, {
+    'val': '0' * 81, # input string
+    'exp': [0] * 81 # expected value
+  }] + [{ 'val': ''.join([str(c) for c in g]), 'exp': g } for g in rand_grids]
+
+  # run pass tests
+  for test in pass_tests:
+    got = sudoku.string_to_grid(test['val'])
+    assert got == test['exp']
+
+  fail_tests = [{
+    'val': '0', # invalid grid length
+    'exp': sudoku.InvalidGrid
+  }, {
+    'val': 'a' * 81, # invalid cell value
+    'exp': sudoku.InvalidCell
+  }]
+
+  # run fail tests
+  for test in fail_tests:
+    try:
+      sudoku.string_to_grid(test['val'])
+      assert False, 'never reached'
+    except (sudoku.InvalidCell, sudoku.InvalidGrid) as err:
+      assert isinstance(err, test['exp'])
 
 def test_solve():
   """test sudoku.solve()"""
