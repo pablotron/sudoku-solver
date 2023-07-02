@@ -4,6 +4,68 @@ import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import sudoku
 
+def test_invalid_grid():
+  """test sudoku.InvalidGrid()"""
+  tests = [{
+    # not enough cells
+    'grid': [0],
+  }, {
+    # too many cells
+    'grid': [i for i in range(82)],
+  }]
+
+  # run tests
+  for test in tests:
+    got_err = False
+    try:
+      sudoku._check_grid(test['grid'])
+    except sudoku.InvalidGrid:
+      got_err = True
+    assert got_err
+
+def test_invalid_cell():
+  """test sudoku.InvalidCell()"""
+  tests = [{
+    # cell > 9
+    'grid': [
+      8, 10, 0,  0, 0, 0,  0, 0, 0,
+      0, 0, 3,  6, 0, 0,  0, 0, 0,
+      0, 7, 0,  0, 9, 0,  2, 0, 0,
+
+      0, 5, 0,  0, 0, 7,  0, 0, 0,
+      0, 0, 0,  0, 4, 5,  7, 0, 0,
+      0, 0, 0,  1, 0, 0,  0, 3, 0,
+
+      0, 0, 1,  0, 0, 0,  0, 6, 8,
+      0, 0, 8,  5, 0, 0,  0, 1, 0,
+      0, 9, 0,  0, 0, 0,  4, 0, 0,
+    ],
+  }, {
+    # cell < 0
+    'grid': [
+      8, -1, 0,  0, 0, 0,  0, 0, 0,
+      0, 0, 3,  6, 0, 0,  0, 0, 0,
+      0, 7, 0,  0, 9, 0,  2, 0, 0,
+
+      0, 5, 0,  0, 0, 7,  0, 0, 0,
+      0, 0, 0,  0, 4, 5,  7, 0, 0,
+      0, 0, 0,  1, 0, 0,  0, 3, 0,
+
+      0, 0, 1,  0, 0, 0,  0, 6, 8,
+      0, 0, 8,  5, 0, 0,  0, 1, 0,
+      0, 9, 0,  0, 0, 0,  4, 0, 0,
+    ],
+  }]
+
+  # run tests
+  for test in tests:
+    got_err = False
+    try:
+      sudoku._check_grid(test['grid'])
+    except sudoku.InvalidCell:
+      got_err = True
+    assert got_err
+
 def test_grid_to_string():
   """test sudoku.grid_to_string()"""
   tests = [{
