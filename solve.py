@@ -20,9 +20,5 @@ grid = [
 # find solution
 solution = sudoku.solve(grid)
 
-# check for solution
-if solution:
-  # print solution
-  print(sudoku.pair_to_string(grid, solution))
-else:
-  print('no solution')
+# print solution if it exists, or 'no solution' if no solution exists
+print(sudoku.pair_to_string(grid, solution) if solution else 'no solution')
