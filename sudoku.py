@@ -127,8 +127,8 @@ def _subgrid(grid: list[z3.Int], i: int) -> list[z3.Int]:
   Used by solve() to build subgrid constraints.
   """
   return [grid[9 * (3 * (i // 3) + (j // 3)) + 3 * (i % 3) + (j % 3)] for j in range(9)]
-  
-def solve(grid: list[int]) -> list[int] | None: 
+
+def solve(grid: list[int]) -> list[int] | None:
   """
   Solve grid and return first solution, or None of there is no solution.
 
@@ -152,26 +152,26 @@ def solve(grid: list[int]) -> list[int] | None:
   """
 
   _check_grid(grid)
-  
+
   # create solver
   s = z3.Solver()
 
   # build 9x9 grid of cells
   # cells = [z3.Int('c%d' % (i)) for i in range(81)]
   cells = z3.IntVector('c', 81)
-  
+
   # cells must be between 1 and 9 (inclusive)
   s.add([z3.And(c >= 1, c <= 9) for c in cells])
-  
+
   # row cells must be distinct
   s.add([z3.Distinct([cells[9 * y + x] for x in range(9)]) for y in range(9)])
-  
+
   # column cells must be distinct
   s.add([z3.Distinct([cells[9 * y + x] for y in range(9)]) for x in range(9)])
-  
+
   # subgrid cells must be distinct
   s.add([z3.Distinct(_subgrid(cells, i)) for i in range(9)])
-  
+
   # add known cells
   for i in range(len(grid)):
     if grid[i] != 0:
