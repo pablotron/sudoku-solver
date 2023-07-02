@@ -105,11 +105,20 @@ import z3
 class InvalidGrid(Exception):
   """Invalid grid size (must have 81 cells)."""
 
-def _check_grid(grid: list[int]) -> None:
-  """Check grid length.  Raises InvalidGrid on error."""
+class InvalidCell(Exception):
+  """Invalid cell value (must be between 0 and 9, inclusive)."""
 
+def _check_grid(grid: list[int]) -> None:
+  """Check grid length and cell values.  Raises exception on error."""
+
+  # check grid size
   if len(grid) != 81:
     raise InvalidGrid("grid length must equal 81")
+
+  # check cells
+  for i in range(81):
+    if grid[i] < 0 or grid[i] > 9:
+      raise InvalidCell('invalid cell value: %d' % (grid[i]))
 
 def _subgrid(grid: list[z3.Int], i: int) -> list[z3.Int]:
   """
