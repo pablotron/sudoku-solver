@@ -1,5 +1,13 @@
 #!/usr/bin/env python3
 
+#
+# solve.py: Solve sample sudoku puzzle and print solution.
+#
+
+import os, sys
+
+# prepend parent directory to module search path
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import sudoku
 
 # sample grid
