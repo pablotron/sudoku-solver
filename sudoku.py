@@ -284,3 +284,32 @@ def pair_to_string(src: list[int], dst: list[int]) -> str:
 
   # build and return output string
   return "\n".join([f'{src[i]}{_row_delim(i)}{dst[i]}' for i in range(len(src))])
+
+def string_to_grid(s: str) -> list[int]:
+  """
+  Parse given string as grid.  String must contain 81 characters in the
+  range 0-9, inclusive.
+
+  Raises an exception if the given string is invalid.
+
+  Example
+  -------
+  >>> grid = sudoku.string_to_grid('012345678' * 9)
+  >>> print(sudoku.grid_to_string(grid))
+  -------------------------
+  | - 1 2 | 3 4 5 | 6 7 8 |
+  | - 1 2 | 3 4 5 | 6 7 8 |
+  | - 1 2 | 3 4 5 | 6 7 8 |
+  |-----------------------|
+  | - 1 2 | 3 4 5 | 6 7 8 |
+  | - 1 2 | 3 4 5 | 6 7 8 |
+  | - 1 2 | 3 4 5 | 6 7 8 |
+  |-----------------------|
+  | - 1 2 | 3 4 5 | 6 7 8 |
+  | - 1 2 | 3 4 5 | 6 7 8 |
+  | - 1 2 | 3 4 5 | 6 7 8 |
+  -------------------------
+  """
+  grid = [ord(s[i]) - 48 for i in range(len(s))]
+  _check_grid(grid)
+  return grid
