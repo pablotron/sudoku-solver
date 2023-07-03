@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang='en-US'>
+  <head>
+    <meta charset='utf-8'/>
+    <title>Sudoku Solver</title>
+    <script type='text/javascript' src='./static/app.js'></script>
+    <style type='text/css'>
+      #grid td input { width: 1em }
+      #grid td.pr { padding-right: 10px }
+      #grid tr.pb td { padding-bottom: 10px }
+    </style>
+  </head>
+
+  <body>
+    <h1>Sudoku Solver</h1>
+    <table id='grid'>
+      {% for y in range(9) %}
+        <tr{% if (y + 1) is divisibleby 3 %} class='pb'{% endif %}>
+        {% for x in range(9) %}
+
+          <td{% if (x + 1) is divisibleby 3 %} class='pr'{% endif %}>
+            <input
+              type='text'
+              id='c{{ 9 * y + x }}'
+              maxlength='1'
+              title='cell {{ 9 * y + x }}'
+              aria-label='cell {{ 9 * y + x }}'
+            />
+          </td>
+        {% endfor %}
+        </tr>
+      {% endfor %}
+    </table>
+
+    <button
+      id='solve'
+      title='Solve puzzle'
+      aria-label='Solve puzzle'
+    >
+      Solve
+    </button>
+
+    <button
+      id='reset'
+      title='Reset to default puzzle.'
+      aria-label='Reset tod default puzzle.'
+    >
+      Reset
+    </button>
+
+    <button
+      id='clear'
+      title='Clear grid.'
+      aria-label='Clear grid.'
+    >
+      Clear
+    </button>
+  </body>
+</html>
