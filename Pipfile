@@ -8,6 +8,7 @@ z3-solver = "*"
 
 [dev-packages]
 pytest = "*"
+pylint = "*"
 
 [requires]
 python_version = "3.11"
