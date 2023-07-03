@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 #
 # solve.py: Solve sample sudoku puzzle and print solution.
