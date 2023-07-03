@@ -2,7 +2,7 @@
 <html lang='en-US'>
   <head>
     <meta charset='utf-8'/>
-    <title>Sudoku Solver</title>
+    <title>{{ title }}</title>
     <script type='text/javascript' src='./static/app.js'></script>
     <style type='text/css'>
       #grid td input { width: 1em }
@@ -12,7 +12,8 @@
   </head>
 
   <body>
-    <h1>Sudoku Solver</h1>
+    <h1>{{ title }}</h1>
+
     <table id='grid'>
       {% for y in range(9) %}
         <tr{% if (y + 1) is divisibleby 3 %} class='pb'{% endif %}>
@@ -32,27 +33,15 @@
       {% endfor %}
     </table>
 
-    <button
-      id='solve'
-      title='Solve puzzle'
-      aria-label='Solve puzzle'
-    >
+    <button id='solve' title='Solve grid.' aria-label='Solve grid.'>
       Solve
     </button>
 
-    <button
-      id='reset'
-      title='Reset to default puzzle.'
-      aria-label='Reset tod default puzzle.'
-    >
+    <button id='reset' title='Reset grid.' aria-label='Reset grid.' data-grid='{{ reset_grid }}'>
       Reset
     </button>
 
-    <button
-      id='clear'
-      title='Clear grid.'
-      aria-label='Clear grid.'
-    >
+    <button id='clear' title='Clear grid.' aria-label='Clear grid.'>
       Clear
     </button>
   </body>
