@@ -47,9 +47,9 @@ Example:
     ....... [100%]
     7 passed in 4.16s
 
-Use [pylint][] to lint the main module:
+Run [pylint][] from the top-level directory to lint the `sudoku` module:
 
-    pipenv run pylint --rcfile .pylintrc sudoku.py
+    pipenv run pylint sudoku.py
 
 [sudoku]: https://en.wikipedia.org/wiki/Sudoku
   "Number placement puzzle."
