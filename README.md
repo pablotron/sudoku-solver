@@ -47,6 +47,10 @@ Example:
     ....... [100%]
     7 passed in 4.16s
 
+Use [pylint][] to lint the main module:
+
+    pipenv run pylint --rcfile .pylintrc sudoku.py
+
 [sudoku]: https://en.wikipedia.org/wiki/Sudoku
   "Number placement puzzle."
 [z3]: https://github.com/Z3Prover/z3
@@ -57,3 +61,5 @@ Example:
   "Python development workflow management tool."
 [pydoc]: https://docs.python.org/3/library/pydoc.html
   "Python documentation generator."
+[pylint]: https://pypi.org/project/pylint/
+  "Python static code analyzer."
