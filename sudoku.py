@@ -125,7 +125,7 @@ def _count_cells(grid: list[int]) -> int:
   r = 0
   for c in grid:
     if c > 0:
-      r += val
+      r += 1
   return r
 
 def _subgrid(grid: list[z3.Int], i: int) -> list[z3.Int]:
