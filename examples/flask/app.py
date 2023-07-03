@@ -3,14 +3,16 @@
 #
 # Usage:
 #
-# Install flask in the virtual environment, then run flask in
-# `examples/flask/`:
+# Install the development dependencies, then run flask via `pipenv` in
+# the `examples/flask/` directory.  Example:
 #
+#   pipenv install --dev # install development dependencies
 #   cd examples/flask/
-#   pipenv run pip install flask
-#   pipenv run flask run
+#   pipenv run flask run # run flask
 #
-# Then connect to http://localhost:5000/
+# Finally, point your browser at the following URL:
+#
+# http://localhost:5000/
 #
 # Note: This application is not secure and should not be run in a
 # production environment.

@@ -1,12 +1,17 @@
 Web frontend example.
 
-Install [Flask][] in the virtual environment and then run it:
+# Usage
 
-    > cd examples/flask/
-    > pipenv run pip install flask
-    > pipenv run flask run
+Install the development dependencies, then run [Flask][] in the
+`examples/flask/` directory, like so:
 
-Then connect to <http://localhost:5000/>
+    pipenv install --dev # install dev dependencies
+    cd examples/flask/
+    pipenv run flask run # run flask
+
+Finally, point your browser at the following URL:
+
+<http://localhost:5000/>
 
 [flask]: https://flask.palletsprojects.com/en/2.3.x/
-  "Web microframework."
+  "Python web microframework."
