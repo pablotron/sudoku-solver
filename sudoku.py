@@ -120,6 +120,14 @@ def _check_grid(grid: list[int]) -> None:
     if grid[i] < 0 or grid[i] > 9:
       raise InvalidCell('invalid cell value: %d' % (grid[i]))
 
+def _count_cells(grid: list[int]) -> int:
+  """Count non-zero grid cells."""
+  r = 0
+  for c in grid:
+    if c > 0:
+      r += val
+  return r
+
 def _subgrid(grid: list[z3.Int], i: int) -> list[z3.Int]:
   """
   Get Nth subgrid of grid.
@@ -152,6 +160,11 @@ def solve(grid: list[int]) -> list[int] | None:
   """
 
   _check_grid(grid)
+
+  # check for at least one non-zero cell
+  # (to prevent pathological solver behavior)
+  if _count_cells(grid) == 0:
+    return None
 
   # create solver
   s = z3.Solver()
