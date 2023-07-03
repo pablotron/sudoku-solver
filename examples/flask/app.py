@@ -6,6 +6,8 @@
 #   cd examples/flask/
 #   pipenv run flask run
 #
+# Then connect to http://localhost:5000/
+#
 
 import json, os, sys, time
 from flask import Flask, abort, request, render_template
