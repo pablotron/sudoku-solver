@@ -118,7 +118,7 @@ def _check_grid(grid: list[int]) -> None:
   # check cells
   for i in range(81):
     if grid[i] < 0 or grid[i] > 9:
-      raise InvalidCell('invalid cell value: %d' % (grid[i]))
+      raise InvalidCell(f'invalid cell value: {grid[i]}')
 
 def _count_cells(grid: list[int]) -> int:
   """Count non-zero grid cells."""
@@ -186,18 +186,18 @@ def solve(grid: list[int]) -> list[int] | None:
   s.add([z3.Distinct(_subgrid(cells, i)) for i in range(9)])
 
   # add known cells
-  for i in range(len(grid)):
-    if grid[i] != 0:
-      s.add(cells[i] == grid[i])
+  for i, v in enumerate(grid):
+    if v != 0:
+      s.add(cells[i] == v)
 
   # is there a solution?
-  if s.check() == z3.sat:
-    # yes, build solution from model
-    m = s.model()
-    return [m[cells[i]].as_long() for i in range(81)]
-  else:
-    # no, return None
+  if s.check() != z3.sat:
+    # no solution, return None
     return None
+
+  # build solution from model
+  m = s.model()
+  return [m[cells[i]].as_long() for i in range(81)]
 
 def _grid_to_rows(grid: list[int]) -> list[str]:
   """
@@ -221,14 +221,14 @@ def _grid_to_rows(grid: list[int]) -> list[str]:
       row.append(str(v) if v != 0 else '-')
 
       # append subgrid delimiter
-      if x > 0 and x < 8 and ((x + 1) % 3 == 0):
+      if 0 < x < 8 and ((x + 1) % 3 == 0):
         row.append('|')
 
     # append row to rows
     rows.append('| ' + ' '.join(row) + ' |')
 
     # append subgrid delimiter
-    if y > 0 and y < 8 and ((y + 1) % 3 == 0):
+    if 0 < y < 8 and ((y + 1) % 3 == 0):
       rows.append('|' + ('-' * 23) + '|')
 
   # append footer
