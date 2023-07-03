@@ -1,3 +1,12 @@
+#
+# app.py: Web frontend sudoku solver.
+#
+# Usage:
+#
+#   cd examples/flask/
+#   pipenv run flask run
+#
+
 import json, os, sys, time
 from flask import Flask, abort, request, render_template
 
@@ -26,11 +35,12 @@ def solve():
   grid = sudoku.string_to_grid(data['grid'])
   app.logger.info('grid: %s' % (grid))
 
+  # find solution, time solve()
   t0 = time.time_ns()
   solution = sudoku.solve(grid)
   t1 = time.time_ns()
 
   return {
-    'time': t1 - t0,
+    'time_ns': t1 - t0,
     'solution': ''.join([str(d) for d in solution]) if solution else '',
   }
