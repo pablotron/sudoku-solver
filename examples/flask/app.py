@@ -1,53 +1,36 @@
-import hashlib
-import hmac
-from flask import Flask, abort, request
-import math
-import sudoku
-import time
-import os
+import json, os, sys, time
+from flask import Flask, abort, request, render_template
 
-API_KEY = os.environ['SUDOKU_API_KEY']
+# prepend top-level directory to module search path
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
+import sudoku
+
 app = Flask(__name__)
 
 @app.route("/")
 def home():
-  return "<p>Hello, World!</p>"
+  return render_template('index.html')
 
 @app.route('/solve', methods=['POST'])
 def solve():
-  body = request.data
-  got_mac = request.headers.get('x-hmac-sha256')
-  if got_mac is None:
-    abort(402) # fixme: correct error code
-
-  # check mac
-  exp_mac = hmac.HMAC(API_KEY.encode(), body, digestmod=hashlib.sha256).hexdigest()
-  if got_mac != exp_mac:
-    app.logger.error('hmac mismatch: got %s, exp %s' % (got_mac, exp_mac))
-    abort(400) # fixme: correct error code
-
   # decode json body
-  data = json.loads(body)
+  data = json.loads(request.data)
 
   # check for required keys
-  for key in ['time', 'grid']:
+  for key in ['grid']:
     if key not in data:
       app.logger.error('missing property: %s' % (key))
       abort(400)
 
-  # check timestamp
-  got_time = data['time']
-  exp_time = time.time()
-  if math.abs(got_time - exp_time) > 30:
-    app.logger.error('time mismatch: got %d, exp %d +/- 30' % (got_time, exp_time))
-    abort(400)
+  # parse string as grid
+  grid = sudoku.string_to_grid(data['grid'])
+  app.logger.info('grid: %s' % (grid))
 
   t0 = time.time_ns()
-  solution = sudoku.solve(data['grid'])
+  solution = sudoku.solve(grid)
   t1 = time.time_ns()
 
   return {
     'time': t1 - t0,
-    'grid': solution,
+    'solution': ''.join([str(d) for d in solution]) if solution else '',
   }
-
