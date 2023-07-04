@@ -14,7 +14,7 @@
   <body>
     <h1>{{ title }}</h1>
 
-    <table id='grid'>
+    <table id='grid' data-reset='{{ reset_grid }}'>
       {% for y in range(9) %}
         <tr{% if (y + 1) is divisibleby 3 %} class='pb'{% endif %}>
         {% for x in range(9) %}
@@ -33,20 +33,10 @@
       {% endfor %}
     </table>
 
-    <button id='solve' title='Solve grid.' aria-label='Solve grid.'>
-      Solve
-    </button>
-
-    <button id='download' title='Download grid as text file.' aria-label='Download grid as text file.'>
-      Download
-    </button>
-
-    <button id='reset' title='Reset grid.' aria-label='Reset grid.' data-grid='{{ reset_grid }}'>
-      Reset
-    </button>
-
-    <button id='clear' title='Clear grid.' aria-label='Clear grid.'>
-      Clear
-    </button>
+    {% for b in buttons %}
+      <button id='{{ b['id'] }}' title='{{ b['help'] }}' aria-label='{{ b['help'] }}'>
+        {{ b['name'] }}
+      </button>
+    {% endfor %}
   </body>
 </html>
