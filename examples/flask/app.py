@@ -18,7 +18,7 @@
 # production environment.
 #
 
-import json, os, sys, time
+import hashlib, json, os, sys, time
 from flask import Flask, abort, request, render_template
 
 # prepend top-level directory to module search path
@@ -67,3 +67,30 @@ def solve():
     'time': t1 - t0,
     'grid': ''.join([str(d) for d in solution]) if solution else '',
   }
+
+def file_name(body: str) -> str:
+  """Get name of downloadable text file."""
+
+  # build filename suffix by from shake128 "digest" of body
+  # (used to generate downloadable filename suffix)
+  suffix = hashlib.shake_128(body.encode()).hexdigest(8)
+
+  # return filename
+  return f"grid-{suffix}.txt"
+
+@app.route('/download', methods=['GET'])
+def download():
+  # get grid request parameter, convert to grid
+  grid_s = request.args.get('grid', '')
+  grid = sudoku.string_to_grid(grid_s)
+
+  # build text file name and body
+  name = file_name(grid_s)
+  body = sudoku.grid_to_string(grid)
+
+  # download text file
+  return (body, {
+    'content-disposition': f'attachment; filename="{name}"',
+    'content-type': 'text/plain',
+    'content-length': str(len(body)),
+  })
