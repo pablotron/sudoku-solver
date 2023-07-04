@@ -3,6 +3,7 @@
   const D = document;
   const get = (id) => D.getElementById(id);
   const on = (id, ev, fn) => get(id).addEventListener(ev, fn);
+  const ask = (m, f) => (() => confirm(m) && f());
 
   // get grid as string
   const to_string = () => {
@@ -14,6 +15,7 @@
     return r.join('');
   };
 
+  // set grid from string
   const set_grid = (s) => {
     // check grid
     if (s.length !== 81 || !s.match(/^[0-9]{81}$/)) {
@@ -28,7 +30,7 @@
   // solve grid
   const solve = () => {
     // send request
-    fetch('./solve', {
+    fetch('solve', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({ grid: to_string() }),
@@ -44,37 +46,26 @@
     });
   };
 
+  // download grid as text file
   const download = () => {
-    location.href = './download?' + (new URLSearchParams({
-      grid: to_string(),
-    })).toString();
+    const q = new URLSearchParams({ grid: to_string() });
+    location.href = `download?${q}`;
   };
 
-  // reset to default grid
-  const reset = () => {
-    set_grid(get('reset').dataset.grid);
-  };
-
-  const confirm_reset = () => {
-    if (confirm('Reset grid?')) {
-      reset();
-    }
-  };
+  // reset grid
+  const reset = () => set_grid(get('grid').dataset.reset);
 
   // clear grid
-  const confirm_clear = () => {
-    if (confirm('Clear grid?')) {
-      for (let i = 0; i < 81; i++) {
-        get(`c${i}`).value = '';
-      }
-    }
-  };
+  const clear = () => D.querySelectorAll('#grid input').forEach(e => e.value = '');
 
   D.addEventListener('DOMContentLoaded', () => {
+    // reset grid
     reset();
+
+    // bind to events
     on('solve', 'click', solve);
     on('download', 'click', download);
-    on('reset', 'click', confirm_reset);
-    on('clear', 'click', confirm_clear);
+    on('reset', 'click', ask('Reset grid?', reset));
+    on('clear', 'click', ask('Clear grid?', clear));
   });
 })();
