@@ -18,7 +18,7 @@
 # production environment.
 #
 
-import hashlib, json, os, sys, time
+import hashlib, htmlmin, json, os, sys, time
 from flask import Flask, abort, request, render_template
 
 # prepend top-level directory to module search path
@@ -40,14 +40,35 @@ DEFAULT_GRID = [
   0, 9, 0,  0, 0, 0,  4, 0, 0,
 ];
 
+# action buttons
+BUTTONS = [{
+  'id': 'solve',
+  'name': 'Solve',
+  'help': 'Solve grid.',
+}, {
+  'id': 'download',
+  'name': 'Download',
+  'help': 'Download grid as text file.',
+}, {
+  'id': 'reset',
+  'name': 'Reset',
+  'help': 'Reset grid.',
+}, {
+  'id': 'clear',
+  'name': 'Clear',
+  'help': 'Clear grid.',
+}]
+
+# create app
 app = Flask(__name__)
 
 @app.route("/")
 def home():
-  return render_template('index.html',
-    title='Solve-o-Matic',
+  return htmlmin.minify(render_template('index.html',
+    title = 'Solve-o-Matic',
+    buttons = BUTTONS,
     reset_grid = ''.join([str(d) for d in DEFAULT_GRID]),
-  )
+  ))
 
 @app.route('/solve', methods=['POST'])
 def solve():
