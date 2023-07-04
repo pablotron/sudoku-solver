@@ -44,6 +44,12 @@
     });
   };
 
+  const download = () => {
+    location.href = './download?' + (new URLSearchParams({
+      grid: to_string(),
+    })).toString();
+  };
+
   // reset to default grid
   const reset = () => {
     set_grid(get('reset').dataset.grid);
@@ -67,6 +73,7 @@
   D.addEventListener('DOMContentLoaded', () => {
     reset();
     on('solve', 'click', solve);
+    on('download', 'click', download);
     on('reset', 'click', confirm_reset);
     on('clear', 'click', confirm_clear);
   });
